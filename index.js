@@ -14,18 +14,27 @@ const addButtonEl = document.getElementById("add-button")
 const shoppingListEl = document.getElementById("shopping-list")
 
 addButtonEl.addEventListener("click", function() {
-    let inputValue = inputFieldEl.value
-    // jw added this function to prevent blanks
+    let inputValue = inputFieldEl.value;
+    // Prevent blanks
     if (inputValue === "") {
         alert("Please enter an item before adding."); 
-        return; // stop the function here
+        return;
     }
 
+    // Prevent curse words
+    const bannedWords = [
+        "fuck", "shit", "bitch", "asshole", "bastard", "dick", "piss", "cunt", "crap", "damn", "slut", "douche"
+    ];
+    const inputLower = inputValue.toLowerCase();
+    for (let word of bannedWords) {
+        if (inputLower.includes(word)) {
+            alert("Please avoid using inappropriate language.");
+            return;
+        }
+    }
 
-
-    push(shoppingListInDB, inputValue)
-    
-    clearInputFieldEl()
+    push(shoppingListInDB, inputValue);
+    clearInputFieldEl();
 })
 
 onValue(shoppingListInDB, function(snapshot) {
