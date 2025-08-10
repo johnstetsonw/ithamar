@@ -1,3 +1,75 @@
+.modal-content {
+    /* ...existing styles... */
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#history-list {
+    max-height: 50vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: #fff;
+    margin: 10vh auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    position: relative;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 16px;
+    top: 8px;
+}
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* Header row for h1 and history button */
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.header-row h1 {
+    margin: 0;
+    flex: 1;
+}
+/* History button custom style */
+.history-button {
+    background-color: #97b7f7;
+    color: black;
+    padding: 4px 10px;
+    font-size: 15px;
+    border-radius: 4px;
+    display: block;
+    margin: 20px auto 0 auto;
+}
 html, body {
     margin: 0;
     padding: 0;
@@ -6,8 +78,6 @@ html, body {
     color: #432000;
     user-select: none;
 }
-
-
 
 .container {
     display: flex;
@@ -19,8 +89,7 @@ html, body {
 img {
     width: 200px;
     margin: 0 auto;
-    border: 3px solid #AC485A;
-    border-radius: 12px;
+    padding: 15px;
 }
 
 input {
@@ -49,6 +118,20 @@ input {
     margin-left: -1px;
     height: 100%;
 }
+
+
+
+button {
+    color: #FDFDFD;
+    background-color: #AC485A;
+    border: 0;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 20px;
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+}
+
 button {
     color: #FDFDFD;
     background-color: #AC485A;
