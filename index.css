@@ -10,12 +10,12 @@ html, body {
 .container {
     display: flex;
     flex-direction: column;
-    max-width: 320px;
+    max-width: 80%;
     margin: 30px auto;
 }
 
 img {
-    width: 180px;
+    width: 200px;
     margin: 0 auto;
 }
 
@@ -24,13 +24,27 @@ input {
     background-color: #DCE1EB;
     border: 0;
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 8px 0 0 8px;
     font-size: 20px;
     text-align: center;
     font-family: 'Rubik', sans-serif;
-    margin: 10px 0;
+    margin: 0;
+    flex: 1;
 }
 
+/* Input group for attaching button to input */
+.input-group {
+    display: flex;
+    width: 100%;
+    gap: 0;
+}
+
+/* Style the button to attach to input */
+.input-group button {
+    border-radius: 0 8px 8px 0;
+    margin-left: -1px;
+    height: 100%;
+}
 button {
     color: #FDFDFD;
     background-color: #AC485A;
