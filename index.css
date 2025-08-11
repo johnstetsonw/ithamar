@@ -13,14 +13,6 @@
     padding: 0;
     list-style: none;
 }
-
-#history-list li {
-    padding: 8px 8px 8px 15px;
-    margin-bottom: 5px;
-    background-color: #f9f9f9;
-    border-radius: 4px;
-    list-style-type: none;
-}
 /* Modal styles */
 .modal {
     display: none;
@@ -142,13 +134,23 @@ button {
     font-family: 'Rubik', sans-serif;
 }
 
+button {
+    color: #FDFDFD;
+    background-color: #AC485A;
+    border: 0;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 20px;
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+}
+
 button:hover {
     background-color: #432000;
     cursor: pointer;
 }
 
-/* Main shopping list styles */
-#shopping-list {
+ul {
     list-style-type: none;
     padding: 0;
     display: flex;
@@ -156,17 +158,17 @@ button:hover {
     gap: 10px;
 }
 
-#shopping-list li {
+ul li {
     font-size: 20px;
     background-color: #FFFDF8;
     padding: 15px;
     border-radius: 8px;
     flex-grow: 1;
     text-align: center;
-    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2)
 }
 
-#shopping-list li:hover {
+ul li:hover {
     background-color: #FFECC7;
     cursor: pointer;
 }

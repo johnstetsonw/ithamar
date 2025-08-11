@@ -32,7 +32,7 @@ const deviceId = getOrCreateDeviceId();
 const userColor = getOrCreateUserColor();
 
 // --- Database References ---
-const shoppingListInDB = ref(database, `shoppingList/${deviceId}`)
+const shoppingListInDB = ref(database, "shoppingList") // Now a shared list
 const bkshoppingListInDB = ref(database, "bkshoppingList") // History is shared
 
 // --- History Modal Logic ---
@@ -151,7 +151,7 @@ function appendItemToShoppingListEl(item) {
     newEl.textContent = itemValue
     newEl.style.backgroundColor = itemColor
     newEl.addEventListener("click", function() {
-        let exactLocationOfItemInDB = ref(database, `shoppingList/${deviceId}/${itemID}`)
+        let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`)
         remove(exactLocationOfItemInDB)
     })
     
