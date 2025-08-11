@@ -1,3 +1,40 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
+import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
+
+// --- App & Firebase Setup ---
+const appSettings = {
+    databaseURL: "https://playground-a781d-default-rtdb.firebaseio.com//"
+}
+const app = initializeApp(appSettings)
+const database = getDatabase(app)
+
+// --- User/Device Identification ---
+function getOrCreateDeviceId() {
+    let deviceId = localStorage.getItem('deviceId');
+    if (!deviceId) {
+        deviceId = `device-${Math.random().toString(36).substring(2, 11)}-${Date.now()}`;
+        localStorage.setItem('deviceId', deviceId);
+    }
+    return deviceId;
+}
+
+function getOrCreateUserColor() {
+    let userColor = localStorage.getItem('userColor');
+    if (!userColor) {
+        const hue = Math.floor(Math.random() * 360);
+        userColor = `hsl(${hue}, 70%, 85%)`; // Generate a light, pastel color
+        localStorage.setItem('userColor', userColor);
+    }
+    return userColor;
+}
+
+const deviceId = getOrCreateDeviceId();
+const userColor = getOrCreateUserColor();
+
+// --- Database References ---
+const shoppingListInDB = ref(database, `shoppingList/${deviceId}`)
+const bkshoppingListInDB = ref(database, "bkshoppingList") // History is shared
+
 // --- History Modal Logic ---
 const historyButtonEl = document.getElementById("history-button");
 const historyModalEl = document.getElementById("history-modal");
@@ -18,10 +55,12 @@ if (historyButtonEl && historyModalEl && closeHistoryModalEl && historyListEl) {
                 historyListEl.innerHTML = "";
                 for (let i = 0; i < itemsArray.length; i++) {
                     let item = itemsArray[i][1];
-                    let value = item.value || item;
+                    let value = item.value;
                     let date = item.date || "";
                     let time = item.time || "";
+                    let color = item.color || "#FFFDF8"; // Fallback color
                     let li = document.createElement("li");
+                    li.style.borderLeft = `5px solid ${color}`;
                     li.textContent = value + (date ? ` (${date} ${time})` : "");
                     historyListEl.appendChild(li);
                 }
@@ -42,21 +81,12 @@ if (historyButtonEl && historyModalEl && closeHistoryModalEl && historyListEl) {
         }
     });
 }
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
-import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
-
-const appSettings = {
-    databaseURL: "https://playground-a781d-default-rtdb.firebaseio.com//"
-}
-
-const app = initializeApp(appSettings)
-const database = getDatabase(app)
-const shoppingListInDB = ref(database, "shoppingList")
-const bkshoppingListInDB = ref(database, "bkshoppingList")
+// --- DOM Elements ---
 const inputFieldEl = document.getElementById("input-field")
 const addButtonEl = document.getElementById("add-button")
 const shoppingListEl = document.getElementById("shopping-list")
 
+// --- Event Listeners ---
 addButtonEl.addEventListener("click", function() {
     let inputValue = inputFieldEl.value
     // jw added this function to prevent blanks
@@ -70,12 +100,19 @@ addButtonEl.addEventListener("click", function() {
     const dateStr = now.toLocaleDateString();
     const timeStr = now.toLocaleTimeString();
 
-    push(shoppingListInDB, inputValue)
-    push(bkshoppingListInDB, {
+    const itemData = {
+        value: inputValue,
+        color: userColor
+    }
+    const historyItemData = {
         value: inputValue,
         date: dateStr,
-        time: timeStr
-    })
+        time: timeStr,
+        deviceId: deviceId,
+        color: userColor
+    }
+    push(shoppingListInDB, itemData)
+    push(bkshoppingListInDB, historyItemData)
     clearInputFieldEl()
 })
 
@@ -87,13 +124,11 @@ onValue(shoppingListInDB, function(snapshot) {
         
         for (let i = 0; i < itemsArray.length; i++) {
             let currentItem = itemsArray[i]
-            let currentItemID = currentItem[0]
-            let currentItemValue = currentItem[1]
-            
             appendItemToShoppingListEl(currentItem)
         }    
     } else {
-        shoppingListEl.innerHTML = "EFES"
+        // A more user-friendly message for an empty list
+        shoppingListEl.innerHTML = "No items here... yet"
     }
 })
 
@@ -107,15 +142,16 @@ function clearInputFieldEl() {
 
 function appendItemToShoppingListEl(item) {
     let itemID = item[0]
-    let itemValue = item[1]
+    let itemData = item[1]
+    let itemValue = itemData.value
+    let itemColor = itemData.color
     
     let newEl = document.createElement("li")
     
     newEl.textContent = itemValue
-    
+    newEl.style.backgroundColor = itemColor
     newEl.addEventListener("click", function() {
-        let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`)
-        
+        let exactLocationOfItemInDB = ref(database, `shoppingList/${deviceId}/${itemID}`)
         remove(exactLocationOfItemInDB)
     })
     
